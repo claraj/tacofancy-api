@@ -6,14 +6,14 @@ import os
 import random
 import requests
 from os import path
-from urlparse import urlparse
+from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 import markdown2 as md
 from datetime import timedelta
-from slughifi import slughifi
+# from slughifi import slughifi
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tacos.db' #= os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 
 ##################
@@ -193,7 +193,7 @@ def get_cookin(model, links):
             ingredient_data = {
                 'url': full_url,
                 'name': name,
-                'slug': slughifi(name),
+                # 'slug': slughifi(name),
                 'recipe': recipe.content.decode('utf-8'),
             }
             if not ingredient:
@@ -252,10 +252,10 @@ def crossdomain(origin=None, methods=None, headers=None,
                 automatic_options=True):
     if methods is not None:
         methods = ', '.join(sorted(x.upper() for x in methods))
-    if headers is not None and not isinstance(headers, basestring):
-        headers = ', '.join(x.upper() for x in headers)
-    if not isinstance(origin, basestring):
-        origin = ', '.join(origin)
+    # if headers is not None and not isinstance(headers, basestring):
+    #     headers = ', '.join(x.upper() for x in headers)
+    # if not isinstance(origin, basestring):
+    #     origin = ', '.join(origin)
     if isinstance(max_age, timedelta):
         max_age = max_age.total_seconds()
 
